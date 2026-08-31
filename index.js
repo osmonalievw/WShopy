@@ -19,7 +19,7 @@ try {
 
 initializeApp({
   credential: cert(serviceAccount),
-  storageBucket: "showp-d6660.appspot.com" // Default bucket
+  storageBucket: "showp-d6660.firebasestorage.app"
 });
 const db = getFirestore();
 const bucket = getStorage().bucket();
