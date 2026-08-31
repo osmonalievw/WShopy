@@ -9,7 +9,7 @@ body {
     background-color: #0d0d0d;
     color: #ffffff;
     overflow-x: hidden;
-    padding-top: calc(var(--tg-safe-area-inset-top, 40px) + 10px);
+    padding-top: calc(var(--tg-safe-area-inset-top, 60px) + 10px);
     padding-bottom: var(--tg-safe-area-inset-bottom, 20px);
 }
 
