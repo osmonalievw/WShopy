@@ -103,3 +103,29 @@ html, body { background-color: #0d0d0d; color: #ffffff; overflow-x: hidden; min-
 .nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 4px; }
 #app { padding-bottom: 100px; }
 #product-page { padding-bottom: 100px; }
+
+/* Animated Brands Marquee */
+.brands-marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 20px 0;
+    position: relative;
+    /* Optional fade edges */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+.marquee-track {
+    display: inline-flex;
+    animation: scroll-marquee 15s linear infinite;
+}
+.marquee-img {
+    height: 100px;
+    object-fit: cover;
+    /* Invert colors to match dark theme! */
+    filter: invert(1);
+    opacity: 0.8;
+}
+@keyframes scroll-marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
