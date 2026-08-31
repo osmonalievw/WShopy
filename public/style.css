@@ -14,7 +14,7 @@ body {
 /* Hero Section */
 .hero {
     position: relative;
-    padding-top: calc(var(--tg-safe-area-inset-top, env(safe-area-inset-top, 47px)) + 15px);
+    padding-top: calc(var(--tg-content-safe-area-inset-top, var(--tg-safe-area-inset-top, 110px)) + 20px);
     min-height: 55vh;
     display: flex;
     flex-direction: column;
@@ -161,7 +161,7 @@ body {
 
 .product-header {
     padding: 20px;
-    padding-top: calc(var(--tg-safe-area-inset-top, env(safe-area-inset-top, 47px)) + 15px);
+    padding-top: calc(var(--tg-content-safe-area-inset-top, var(--tg-safe-area-inset-top, 110px)) + 20px);
 }
 
 .back-btn {
