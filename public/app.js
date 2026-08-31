@@ -7,6 +7,9 @@ try {
     }
     tg.setHeaderColor('#0d0d0d');
     tg.setBackgroundColor('#0d0d0d');
+    if (tg.setBottomBarColor) {
+        tg.setBottomBarColor('#0d0d0d');
+    }
 } catch(e) {}
 
 let currentProduct = null;
