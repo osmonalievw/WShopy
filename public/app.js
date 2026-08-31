@@ -2,37 +2,24 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 
 try {
-    if (tg.requestFullscreen) {
-        tg.requestFullscreen();
-    }
+    if (tg.requestFullscreen) { tg.requestFullscreen(); }
     tg.setHeaderColor('#0d0d0d');
     tg.setBackgroundColor('#0d0d0d');
-    if (tg.setBottomBarColor) {
-        tg.setBottomBarColor('#0d0d0d');
-    }
+    if (tg.setBottomBarColor) { tg.setBottomBarColor('#0d0d0d'); }
 } catch(e) {}
 
 let currentProduct = null;
 let selectedSize = null;
+let currentColorVariant = null;
 
-// Fake Pricing Logic for MVP
 function calculateKGS(retailPriceUSD) {
-    const usdToJpy = 150;
-    const jpyToKgs = 0.57; // Example rate
-    const shipping = 1600;
-    const margin = 2000;
-    
-    // If retail is null, base it on something standard
+    const usdToJpy = 150; const jpyToKgs = 0.57; const shipping = 1600; const margin = 2000;
     const priceUSD = retailPriceUSD || 120;
     const priceJPY = priceUSD * usdToJpy;
-    const priceKGS = Math.round(priceJPY * jpyToKgs + shipping + margin);
-    
-    return priceKGS;
+    return Math.round(priceJPY * jpyToKgs + shipping + margin);
 }
 
-function formatPrice(price) {
-    return price.toLocaleString('en-US');
-}
+function formatPrice(price) { return price.toLocaleString('en-US'); }
 
 async function loadSneakers() {
     try {
@@ -43,21 +30,17 @@ async function loadSneakers() {
         grid.innerHTML = '';
         
         if (products && products.length > 0) {
-            // Set Hero to the first product
             const hero = products[0];
             document.getElementById('hero-img').src = hero.thumbnail;
             document.getElementById('hero-title').innerText = hero.shoeName;
-            document.querySelector('.bg-text').innerText = hero.brand.toUpperCase();
             
             const heroPrice = calculateKGS(hero.retailPrice);
             document.getElementById('hero-price').innerText = `~${formatPrice(heroPrice)} KGS`;
             
             document.getElementById('hero-buy-btn').onclick = () => openModal(hero, heroPrice);
             
-            // Populate grid with the rest
             products.slice(1).forEach(p => {
                 const price = calculateKGS(p.retailPrice);
-                
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -71,45 +54,37 @@ async function loadSneakers() {
             });
         }
     } catch (e) {
-        console.error(e);
         document.getElementById('catalog-grid').innerHTML = '<p style="text-align:center; width:100%;">Ошибка загрузки каталога</p>';
     }
 }
 
-// Navigation & Product Page Logic
 const appDiv = document.getElementById('app');
 const productPage = document.getElementById('product-page');
 const backBtn = document.getElementById('back-to-catalog');
-const sizeBoxes = document.querySelectorAll('.size-box');
 const confirmBtn = document.getElementById('confirm-order-btn');
-
-let currentColorVariant = null;
+const checkoutModal = document.getElementById('checkout-modal');
+const closeCheckoutBtn = document.getElementById('close-checkout');
+const payConfirmBtn = document.getElementById('pay-confirm-btn');
 
 function renderImages(images) {
     const slider = document.getElementById('image-slider');
     const dotsContainer = document.getElementById('slider-dots');
-    slider.innerHTML = '';
-    dotsContainer.innerHTML = '';
+    slider.innerHTML = ''; dotsContainer.innerHTML = '';
     
     images.forEach((imgUrl, index) => {
-        // Image
         const img = document.createElement('img');
-        img.src = imgUrl;
-        img.className = 'pp-sneaker';
+        img.src = imgUrl; img.className = 'pp-sneaker';
         slider.appendChild(img);
         
-        // Dot
         const dot = document.createElement('div');
         dot.className = `dot ${index === 0 ? 'active' : ''}`;
         dotsContainer.appendChild(dot);
     });
     
-    // Simple scroll listener to update dots
     slider.addEventListener('scroll', () => {
         const scrollPosition = slider.scrollLeft;
         const slideWidth = slider.clientWidth;
         const activeIndex = Math.round(scrollPosition / slideWidth);
-        
         const dots = dotsContainer.querySelectorAll('.dot');
         dots.forEach((d, i) => {
             if (i === activeIndex) d.classList.add('active');
@@ -123,8 +98,7 @@ function selectColor(colorVariant) {
     document.getElementById('selected-color-name').innerText = colorVariant.name;
     renderImages(colorVariant.images);
     
-    // Update swatches visually
-    const swatches = document.querySelectorAll('.swatch');
+    const swatches = document.querySelectorAll('.swatch-card');
     swatches.forEach(swatch => {
         if (swatch.dataset.hex === colorVariant.hex) swatch.classList.add('active');
         else swatch.classList.remove('active');
@@ -134,70 +108,74 @@ function selectColor(colorVariant) {
 function openModal(product, price) {
     currentProduct = product;
     selectedSize = null;
+    document.getElementById('selected-size-name').innerText = "Не выбран";
     
-    // Set Basic Details
-    document.getElementById('pp-bg-text').innerText = product.brand.toUpperCase();
     document.getElementById('pp-title').innerText = product.shoeName;
     document.getElementById('pp-brand').innerText = product.brand;
     document.getElementById('pp-price').innerText = formatPrice(price) + " KGS";
+    document.getElementById('checkout-price').innerText = formatPrice(price) + " KGS";
     
-    // Setup Colors if they exist
     const swatchesContainer = document.getElementById('color-swatches');
     swatchesContainer.innerHTML = '';
     
     if (product.colors && product.colors.length > 0) {
-        product.colors.forEach((color, index) => {
+        product.colors.forEach((color) => {
             const swatch = document.createElement('div');
-            swatch.className = 'swatch';
-            swatch.style.backgroundColor = color.hex;
+            swatch.className = 'swatch-card';
             swatch.dataset.hex = color.hex;
             swatch.onclick = () => selectColor(color);
+            swatch.innerHTML = `
+                <img src="${color.images[0]}" alt="${color.name}">
+                <span>${color.name}</span>
+            `;
             swatchesContainer.appendChild(swatch);
         });
-        // Select first color by default
         selectColor(product.colors[0]);
     } else {
-        // Fallback for MVP if no colors defined
         document.getElementById('selected-color-name').innerText = "Стандартный";
         renderImages([product.thumbnail]);
     }
     
-    // Reset sizes
-    sizeBoxes.forEach(b => b.classList.remove('active'));
+    const sizeGrid = document.getElementById('size-grid');
+    const sizePills = sizeGrid.querySelectorAll('.size-pill');
+    sizePills.forEach(box => {
+        box.classList.remove('active');
+        box.onclick = function() {
+            sizePills.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            selectedSize = this.innerText;
+            document.getElementById('selected-size-name').innerText = selectedSize;
+        }
+    });
     
-    // Transition
     appDiv.style.display = 'none';
     productPage.style.display = 'block';
-    
-    // Scroll to top
     window.scrollTo(0,0);
 }
 
-backBtn.onclick = () => {
-    productPage.style.display = 'none';
-    appDiv.style.display = 'block';
+backBtn.onclick = () => { productPage.style.display = 'none'; appDiv.style.display = 'block'; };
+
+confirmBtn.onclick = () => {
+    if (!selectedSize) { tg.showAlert("Пожалуйста, выберите размер (EU)!"); return; }
+    checkoutModal.style.display = 'flex';
 };
 
-sizeBoxes.forEach(box => {
-    box.onclick = function() {
-        sizeBoxes.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        selectedSize = this.innerText;
-    }
-});
+closeCheckoutBtn.onclick = () => { checkoutModal.style.display = 'none'; };
 
-confirmBtn.onclick = async () => {
-    if (!selectedSize) {
-        tg.showAlert("Пожалуйста, выберите размер (EU)!");
-        return;
-    }
+payConfirmBtn.onclick = async () => {
+    const name = document.getElementById('buyer-name').value;
+    const phone = document.getElementById('buyer-phone').value;
+    
+    if (!name || !phone) { tg.showAlert("Заполните Имя и Номер телефона!"); return; }
     
     const orderData = {
         user_id: tg.initDataUnsafe?.user?.id || 123456789,
         product: currentProduct,
         color: currentColorVariant ? currentColorVariant.name : 'Стандартный',
         price: document.getElementById('pp-price').innerText,
-        size: selectedSize
+        size: selectedSize,
+        name: name,
+        phone: phone
     };
     
     try {
@@ -206,17 +184,16 @@ confirmBtn.onclick = async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
         });
-        
         if (res.ok) {
-            tg.showAlert("✅ Заказ оформлен! Наш менеджер свяжется с вами для подтверждения.");
+            tg.showAlert("✅ Спасибо! Ваша заявка принята. Ожидайте подтверждения в течение часа.");
+            checkoutModal.style.display = 'none';
             productPage.style.display = 'none';
             appDiv.style.display = 'block';
-            tg.close(); // Close WebApp
+            tg.close();
         }
     } catch (e) {
         tg.showAlert("Ошибка при отправке заказа.");
     }
 };
 
-// Start
 loadSneakers();

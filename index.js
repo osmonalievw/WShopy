@@ -93,10 +93,10 @@ app.get('/api/sneakers', (req, res) => {
 });
 
 app.post('/api/order', (req, res) => {
-    const { user_id, product, price, size, color } = req.body;
+    const { user_id, product, price, size, color, name, phone } = req.body;
     
     // Notify Admin via Bot
-    const msg = `🔥 **НОВЫЙ ЗАКАЗ** 🔥\n\nКлиент ID: ${user_id}\nМодель: ${product.shoeName}\nЦвет: ${color}\nРазмер: ${size} (EU)\nЦена: ${price}\n\nSKU: ${product.styleID}`;
+    const msg = `🔥 **НОВЫЙ ЗАКАЗ** 🔥\n\nИмя: ${name}\nТелефон: ${phone}\nКлиент ID: ${user_id}\nМодель: ${product.shoeName}\nЦвет: ${color}\nРазмер: ${size} (EU)\nЦена: ${price}\n\nSKU: ${product.styleID}`;
     
     // Send to Admin (hardcoded for MVP, in future save to DB)
     // Assuming the bot owner is the admin. You can get owner ID dynamically or set in .env

@@ -10,15 +10,33 @@
 </head>
 <body>
     <div id="app">
-        <!-- Hero Section -->
+        <!-- Categories (Horizontal Scroll) -->
+        <div class="categories-scroll">
+            <span class="cat-pill active">Все</span>
+            <span class="cat-pill">Lifestyle</span>
+            <span class="cat-pill">Running</span>
+            <span class="cat-pill">Basketball</span>
+            <span class="cat-pill">For Women</span>
+        </div>
+
+        <!-- Banner / Hero Section -->
         <div class="hero">
-            <h1 class="bg-text">NIKE</h1>
+            <h1 class="bg-text">HOT</h1>
             <img src="https://pngimg.com/uploads/sneaker/sneaker_PNG48.png" alt="Hero Sneaker" class="hero-sneaker" id="hero-img">
             <div class="hero-info">
                 <h2 id="hero-title">Air Jordan 1 Retro High</h2>
                 <p id="hero-price">~14 500 KGS</p>
                 <button class="buy-btn" id="hero-buy-btn">Выкупить из Японии</button>
             </div>
+        </div>
+
+        <!-- Brands Carousel -->
+        <div class="brands-scroll">
+            <span class="brand-item">NIKE</span>
+            <span class="brand-item">ADIDAS</span>
+            <span class="brand-item">NEW BALANCE</span>
+            <span class="brand-item">VANS</span>
+            <span class="brand-item">CONVERSE</span>
         </div>
 
         <!-- Catalog Grid -->
@@ -34,11 +52,11 @@
     <!-- Product Page (Hidden by default) -->
     <div id="product-page" style="display: none;">
         <div class="product-header">
-            <button class="back-btn" id="back-to-catalog">← Назад в каталог</button>
+            <button class="back-btn" id="back-to-catalog">← Назад</button>
+            <button class="share-btn" id="share-btn">🔗</button>
         </div>
         
         <div class="product-image-container">
-            <h1 class="bg-text" id="pp-bg-text">NIKE</h1>
             <div class="image-slider" id="image-slider">
                 <!-- Images injected here -->
             </div>
@@ -46,39 +64,72 @@
         </div>
         
         <div class="product-details">
+            <div class="product-title-row">
+                <h2 id="pp-title">Air Jordan 1 Retro High</h2>
+                <p class="pp-brand" id="pp-brand">NIKE</p>
+            </div>
+            
+            <div class="price-box">
+                <h3 id="pp-price">16 425 KGS</h3>
+                <p class="price-desc">Конечная цена (вкл. доставку в Бишкек)</p>
+            </div>
+
             <div class="trust-badges">
-                <span class="badge">🇯🇵 Оригинал (Токио)</span>
-                <span class="badge">✈️ Доставка ~14 дней</span>
+                <span class="badge">🇯🇵 Выкуп из Японии</span>
+                <span class="badge">✈️ Доставка 10-14 дней</span>
             </div>
             
             <div class="color-selector">
-                <p>Цвет: <span id="selected-color-name">Chicago (Red)</span></p>
-                <div class="color-swatches" id="color-swatches">
+                <p>Цвет: <b id="selected-color-name">Chicago</b></p>
+                <!-- Amazon style: thumbnails in a horizontal scrolling row -->
+                <div class="color-swatches-scroll" id="color-swatches">
                     <!-- Swatches injected here -->
                 </div>
             </div>
             
-            <h2 id="pp-title">Air Jordan 1 Retro High</h2>
-            <p class="pp-brand" id="pp-brand">NIKE</p>
-            
-            <div class="price-box">
-                <h3 id="pp-price">16 425 KGS</h3>
-                <p class="price-desc">Товар + Авиадоставка + Комиссия сервиса включены.</p>
-            </div>
-            
             <div class="size-selector">
-                <p>Выберите размер (EU):</p>
-                <div class="size-grid" id="size-grid">
-                    <div class="size-box">40</div>
-                    <div class="size-box">41</div>
-                    <div class="size-box">42</div>
-                    <div class="size-box">43</div>
-                    <div class="size-box">44</div>
-                    <div class="size-box">45</div>
+                <p>Размер (EU): <b id="selected-size-name">Не выбран</b></p>
+                <!-- Amazon style: horizontally scrolling pills -->
+                <div class="size-scroll" id="size-grid">
+                    <div class="size-pill">40</div>
+                    <div class="size-pill">41</div>
+                    <div class="size-pill">42</div>
+                    <div class="size-pill">43</div>
+                    <div class="size-pill">44</div>
+                    <div class="size-pill">45</div>
                 </div>
             </div>
             
             <button class="confirm-btn" id="confirm-order-btn">Оформить выкуп</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Оформление заказа</h3>
+                <button class="close-modal" id="close-checkout">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle">Для оформления заказа необходима предоплата. Мы выкупим товар сразу после подтверждения платежа.</p>
+                
+                <div class="payment-details">
+                    <p>Сумма к оплате: <b id="checkout-price" style="color: #00ffcc;">0 KGS</b></p>
+                    <div class="bank-card">
+                        <span>MBANK / DemirBank</span>
+                        <strong>1234 5678 9012 3456</strong>
+                        <span class="card-holder">Получатель: WShopy</span>
+                    </div>
+                </div>
+
+                <div class="checkout-form">
+                    <input type="text" id="buyer-name" placeholder="Ваше Имя и Фамилия" required>
+                    <input type="tel" id="buyer-phone" placeholder="Номер телефона (WhatsApp)" required>
+                </div>
+                
+                <button class="buy-btn" id="pay-confirm-btn" style="width: 100%; margin-top: 20px;">Я перевел(а) деньги</button>
+            </div>
         </div>
     </div>
 
