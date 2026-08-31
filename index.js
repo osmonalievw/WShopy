@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 const WEBAPP_URL = process.env.WEBAPP_URL || "https://wshopy.onrender.com";
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mock Database for MVP (Bypasses StockX Cloudflare Blocks)
@@ -92,18 +92,28 @@ app.get('/api/sneakers', (req, res) => {
     res.json(mockSneakers);
 });
 
-app.post('/api/order', (req, res) => {
-    const { user_id, product, price, size, color, name, phone } = req.body;
+app.post('/api/order', async (req, res) => {
+    const { user_id, product, price, size, color, name, phone, receiptBase64 } = req.body;
     
-    // Notify Admin via Bot
     const msg = `🔥 **НОВЫЙ ЗАКАЗ** 🔥\n\nИмя: ${name}\nТелефон: ${phone}\nКлиент ID: ${user_id}\nМодель: ${product.shoeName}\nЦвет: ${color}\nРазмер: ${size} (EU)\nЦена: ${price}\n\nSKU: ${product.styleID}`;
     
-    // Send to Admin (hardcoded for MVP, in future save to DB)
-    // Assuming the bot owner is the admin. You can get owner ID dynamically or set in .env
-    // bot.telegram.sendMessage(process.env.ADMIN_ID, msg, { parse_mode: 'Markdown' });
-    
-    console.log("Order received:", msg);
-    res.json({ success: true, message: "Order placed" });
+    try {
+        const targetChat = process.env.ADMIN_ID || user_id; // Send to admin, or fallback to user for testing
+        if (targetChat) {
+            if (receiptBase64) {
+                // Convert base64 to buffer (strip data:image/jpeg;base64, prefix)
+                const base64Data = receiptBase64.replace(/^data:image\/\w+;base64,/, "");
+                const buffer = Buffer.from(base64Data, 'base64');
+                await bot.telegram.sendPhoto(targetChat, { source: buffer }, { caption: msg });
+            } else {
+                await bot.telegram.sendMessage(targetChat, msg);
+            }
+        }
+        res.json({ success: true, message: "Order placed" });
+    } catch (e) {
+        console.error("Error sending order:", e);
+        res.status(500).json({ error: "Failed to send order" });
+    }
 });
 
 // Telegram Bot Logic

@@ -162,11 +162,31 @@ confirmBtn.onclick = () => {
 
 closeCheckoutBtn.onclick = () => { checkoutModal.style.display = 'none'; };
 
+let receiptBase64 = null;
+const receiptInput = document.getElementById('receipt-upload');
+const fileNameDisplay = document.getElementById('file-name-display');
+
+receiptInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        fileNameDisplay.innerText = "Файл: " + file.name;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            receiptBase64 = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
 payConfirmBtn.onclick = async () => {
     const name = document.getElementById('buyer-name').value;
     const phone = document.getElementById('buyer-phone').value;
     
     if (!name || !phone) { tg.showAlert("Заполните Имя и Номер телефона!"); return; }
+    if (!receiptBase64) { tg.showAlert("Пожалуйста, прикрепите скриншот чека об оплате!"); return; }
+    
+    payConfirmBtn.innerText = "Отправка...";
+    payConfirmBtn.disabled = true;
     
     const orderData = {
         user_id: tg.initDataUnsafe?.user?.id || 123456789,
@@ -175,7 +195,8 @@ payConfirmBtn.onclick = async () => {
         price: document.getElementById('pp-price').innerText,
         size: selectedSize,
         name: name,
-        phone: phone
+        phone: phone,
+        receiptBase64: receiptBase64
     };
     
     try {
@@ -185,14 +206,19 @@ payConfirmBtn.onclick = async () => {
             body: JSON.stringify(orderData)
         });
         if (res.ok) {
-            tg.showAlert("✅ Спасибо! Ваша заявка принята. Ожидайте подтверждения в течение часа.");
+            tg.showAlert("✅ Спасибо! Ваша заявка принята и чек загружен. Ожидайте подтверждения в течение часа.");
             checkoutModal.style.display = 'none';
             productPage.style.display = 'none';
             appDiv.style.display = 'block';
             tg.close();
+        } else {
+            tg.showAlert("Ошибка при отправке заказа (Файл слишком большой?).");
         }
     } catch (e) {
         tg.showAlert("Ошибка при отправке заказа.");
+    } finally {
+        payConfirmBtn.innerText = "Я перевел(а) деньги";
+        payConfirmBtn.disabled = false;
     }
 };
 

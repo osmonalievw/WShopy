@@ -92,3 +92,6 @@ html, body { background-color: #0d0d0d; color: #ffffff; overflow-x: hidden; min-
 .checkout-form input:focus { outline: none; border-color: #00ffcc; }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.file-upload-btn { display: block; width: 100%; padding: 15px; border-radius: 10px; background: #222; color: #00ffcc; text-align: center; border: 1px dashed #00ffcc; cursor: pointer; font-size: 14px; margin-top: 10px; }
+.file-upload-btn:active { background: #333; }

@@ -126,6 +126,12 @@
                 <div class="checkout-form">
                     <input type="text" id="buyer-name" placeholder="Ваше Имя и Фамилия" required>
                     <input type="tel" id="buyer-phone" placeholder="Номер телефона (WhatsApp)" required>
+                    
+                    <div class="file-upload-container">
+                        <label for="receipt-upload" class="file-upload-btn">📎 Прикрепить скриншот чека</label>
+                        <input type="file" id="receipt-upload" accept="image/*" style="display: none;">
+                        <p id="file-name-display" style="font-size: 12px; color: #aaa; text-align: center; margin-top: 5px;"></p>
+                    </div>
                 </div>
                 
                 <button class="buy-btn" id="pay-confirm-btn" style="width: 100%; margin-top: 20px;">Я перевел(а) деньги</button>
