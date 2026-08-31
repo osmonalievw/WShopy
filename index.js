@@ -4,6 +4,16 @@ const { Telegraf } = require('telegraf');
 const SneaksAPI = require('sneaks-api');
 const cors = require('cors');
 const path = require('path');
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin
+const serviceAccount = require('./serviceAccountKey.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "showp-d6660.appspot.com" // Default bucket
+});
+const db = admin.firestore();
+const bucket = admin.storage().bucket();
 
 const app = express();
 const bot = new Telegraf(process.env.TGBOT_API_KEY);
@@ -95,24 +105,44 @@ app.get('/api/sneakers', (req, res) => {
 app.post('/api/order', async (req, res) => {
     const { user_id, product, price, size, color, name, phone, receiptBase64 } = req.body;
     
-    const msg = `🔥 **НОВЫЙ ЗАКАЗ** 🔥\n\nИмя: ${name}\nТелефон: ${phone}\nКлиент ID: ${user_id}\nМодель: ${product.shoeName}\nЦвет: ${color}\nРазмер: ${size} (EU)\nЦена: ${price}\n\nSKU: ${product.styleID}`;
-    
     try {
-        const targetChat = process.env.ADMIN_ID || user_id; // Send to admin, or fallback to user for testing
-        if (targetChat) {
-            if (receiptBase64) {
-                // Convert base64 to buffer (strip data:image/jpeg;base64, prefix)
-                const base64Data = receiptBase64.replace(/^data:image\/\w+;base64,/, "");
-                const buffer = Buffer.from(base64Data, 'base64');
-                await bot.telegram.sendPhoto(targetChat, { source: buffer }, { caption: msg });
-            } else {
-                await bot.telegram.sendMessage(targetChat, msg);
-            }
+        let receiptUrl = null;
+        
+        if (receiptBase64) {
+            // Upload to Firebase Storage
+            const base64Data = receiptBase64.replace(/^data:image\/\w+;base64,/, "");
+            const buffer = Buffer.from(base64Data, 'base64');
+            const fileName = `receipts/${Date.now()}_${user_id}.jpg`;
+            const file = bucket.file(fileName);
+            
+            await file.save(buffer, {
+                metadata: { contentType: 'image/jpeg' }
+            });
+            
+            // Save the exact storage path so Flutter can easily render it
+            receiptUrl = `gs://${bucket.name}/${fileName}`;
         }
+        
+        // Save to Firestore
+        const orderRef = await db.collection('orders').add({
+            userId: user_id,
+            name: name,
+            phone: phone,
+            productId: product.styleID,
+            productName: product.shoeName,
+            color: color,
+            size: size,
+            price: price,
+            receiptUrl: receiptUrl,
+            status: 'pending_payment',
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        
+        console.log(`Order ${orderRef.id} saved to Firebase!`);
         res.json({ success: true, message: "Order placed" });
     } catch (e) {
-        console.error("Error sending order:", e);
-        res.status(500).json({ error: "Failed to send order" });
+        console.error("Error saving order to Firebase:", e);
+        res.status(500).json({ error: "Failed to process order" });
     }
 });
 
