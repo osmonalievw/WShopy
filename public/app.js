@@ -1,5 +1,13 @@
 const tg = window.Telegram.WebApp;
-tg.expand(); // Fullscreen mode
+tg.expand();
+
+try {
+    if (tg.requestFullscreen) {
+        tg.requestFullscreen();
+    }
+    tg.setHeaderColor('#0d0d0d');
+    tg.setBackgroundColor('#0d0d0d');
+} catch(e) {}
 
 let currentProduct = null;
 let selectedSize = null;
