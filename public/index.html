@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    <title>Sneaker Concierge</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="bg-text">NIKE</h1>
+            <img src="https://pngimg.com/uploads/sneaker/sneaker_PNG48.png" alt="Hero Sneaker" class="hero-sneaker" id="hero-img">
+            <div class="hero-info">
+                <h2 id="hero-title">Air Jordan 1 Retro High</h2>
+                <p id="hero-price">~14 500 KGS</p>
+                <button class="buy-btn" id="hero-buy-btn">Выкупить из Японии</button>
+            </div>
+        </div>
+
+        <!-- Catalog Grid -->
+        <div class="catalog">
+            <h3>Релизы из Токио</h3>
+            <div class="grid" id="catalog-grid">
+                <!-- Items will be injected here via JS -->
+                <p style="text-align: center; width: 100%;">Загрузка базы данных...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Page (Hidden by default) -->
+    <div id="product-page" style="display: none;">
+        <div class="product-header">
+            <button class="back-btn" id="back-to-catalog">← Назад в каталог</button>
+        </div>
+        
+        <div class="product-image-container">
+            <h1 class="bg-text" id="pp-bg-text">NIKE</h1>
+            <div class="image-slider" id="image-slider">
+                <!-- Images injected here -->
+            </div>
+            <div class="slider-dots" id="slider-dots"></div>
+        </div>
+        
+        <div class="product-details">
+            <div class="trust-badges">
+                <span class="badge">🇯🇵 Оригинал (Токио)</span>
+                <span class="badge">✈️ Доставка ~14 дней</span>
+            </div>
+            
+            <div class="color-selector">
+                <p>Цвет: <span id="selected-color-name">Chicago (Red)</span></p>
+                <div class="color-swatches" id="color-swatches">
+                    <!-- Swatches injected here -->
+                </div>
+            </div>
+            
+            <h2 id="pp-title">Air Jordan 1 Retro High</h2>
+            <p class="pp-brand" id="pp-brand">NIKE</p>
+            
+            <div class="price-box">
+                <h3 id="pp-price">16 425 KGS</h3>
+                <p class="price-desc">Товар + Авиадоставка + Комиссия сервиса включены.</p>
+            </div>
+            
+            <div class="size-selector">
+                <p>Выберите размер (EU):</p>
+                <div class="size-grid" id="size-grid">
+                    <div class="size-box">40</div>
+                    <div class="size-box">41</div>
+                    <div class="size-box">42</div>
+                    <div class="size-box">43</div>
+                    <div class="size-box">44</div>
+                    <div class="size-box">45</div>
+                </div>
+            </div>
+            
+            <button class="confirm-btn" id="confirm-order-btn">Оформить выкуп</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

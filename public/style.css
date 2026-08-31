@@ -1,0 +1,359 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #0d0d0d;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    min-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #2a2a2a 0%, #0d0d0d 70%);
+    overflow: hidden;
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.bg-text {
+    position: absolute;
+    font-size: 25vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    z-index: 0;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    letter-spacing: 5px;
+    width: 100%;
+}
+
+.hero-sneaker {
+    position: relative;
+    z-index: 1;
+    width: 80%;
+    max-width: 350px;
+    filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.7));
+    transform: rotate(-10deg) scale(1.1);
+    margin-bottom: 20px;
+}
+
+.hero-info {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-top: -20px;
+}
+
+.hero-info h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.hero-info p {
+    font-size: 18px;
+    color: #00ffcc;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.buy-btn {
+    background: linear-gradient(45deg, #00ffcc, #0099ff);
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+}
+
+/* Catalog Grid */
+.catalog {
+    padding: 20px;
+}
+
+.catalog h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #aaa;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.card {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+}
+
+.card .brand {
+    font-size: 12px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.card .name {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.card .price {
+    font-size: 14px;
+    color: #00ffcc;
+    margin-bottom: 10px;
+}
+
+.card-btn {
+    background: transparent;
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Product Page */
+#product-page {
+    background-color: #0d0d0d;
+    min-height: 100vh;
+    padding-bottom: 40px;
+}
+
+.product-header {
+    padding: 20px;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    color: #00ffcc;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.product-image-container {
+    position: relative;
+    height: 35vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.image-slider {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    scrollbar-width: none; /* Firefox */
+}
+
+.image-slider::-webkit-scrollbar {
+    display: none; /* Safari/Chrome */
+}
+
+.pp-sneaker {
+    scroll-snap-align: center;
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 350px;
+    object-fit: contain;
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.8));
+    transform: rotate(-5deg) scale(0.9);
+    margin: 0 auto;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 3;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #444;
+    transition: 0.3s;
+}
+
+.dot.active {
+    background: #00ffcc;
+    box-shadow: 0 0 5px #00ffcc;
+}
+
+.product-details {
+    padding: 20px;
+    background: #151515;
+    border-radius: 20px 20px 0 0;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.5);
+}
+
+.trust-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: #222;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #00ffcc;
+    border: 1px solid #333;
+}
+
+.color-selector {
+    margin-bottom: 20px;
+}
+
+.color-selector p {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+#selected-color-name {
+    color: #fff;
+    font-weight: bold;
+}
+
+.color-swatches {
+    display: flex;
+    gap: 12px;
+}
+
+.swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #333;
+    transition: 0.3s;
+}
+
+.swatch.active {
+    border-color: #00ffcc;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+#pp-title {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.pp-brand {
+    color: #888;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.price-box {
+    background: #1c1c1c;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
+}
+
+#pp-price {
+    font-size: 22px;
+    color: #00ffcc;
+    margin-bottom: 5px;
+}
+
+.price-desc {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.size-selector p {
+    margin-bottom: 10px;
+    color: #ddd;
+}
+
+.size-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.size-box {
+    border: 1px solid #444;
+    padding: 12px;
+    border-radius: 8px;
+    color: #ccc;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.size-box.active {
+    background: #00ffcc;
+    color: #000;
+    border-color: #00ffcc;
+}
+
+.confirm-btn {
+    width: 100%;
+    background: linear-gradient(45deg, #00ffcc, #0099ff);
+    color: #000;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+}
