@@ -230,3 +230,5 @@ payConfirmBtn.onclick = async () => {
 };
 
 loadSneakers();
+
+function filterBrand(brand) { window.Telegram.WebApp.showAlert('Фильтр товаров по бренду ' + brand + ' (Загрузка из Firebase в разработке)'); }

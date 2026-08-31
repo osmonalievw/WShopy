@@ -116,14 +116,31 @@ html, body { background-color: #0d0d0d; color: #ffffff; overflow-x: hidden; min-
 }
 .marquee-track {
     display: inline-flex;
+    gap: 15px;
+    padding-left: 15px;
     animation: scroll-marquee 15s linear infinite;
 }
-.marquee-img {
-    height: 100px;
-    object-fit: cover;
-    /* Invert colors to match dark theme! */
-    filter: invert(1);
-    opacity: 0.8;
+.marquee-track:active {
+    animation-play-state: paused;
+}
+.brand-box {
+    padding: 15px 25px; 
+    border-radius: 12px; 
+    background: #1a1a1a;
+    font-size: 16px; 
+    font-weight: 900; 
+    letter-spacing: 2px;
+    color: #fff; 
+    cursor: pointer; 
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+.brand-box:active {
+    background: #00ffcc;
+    color: #000;
 }
 @keyframes scroll-marquee {
     0% { transform: translateX(0); }
