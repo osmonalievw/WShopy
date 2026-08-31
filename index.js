@@ -10,7 +10,7 @@ const bot = new Telegraf(process.env.TGBOT_API_KEY);
 const sneaks = new SneaksAPI();
 
 const PORT = process.env.PORT || 3000;
-const NGROK_URL = "https://hrs-grain-testimonials-circle.trycloudflare.com"; // Replace when testing locally
+const WEBAPP_URL = process.env.WEBAPP_URL || "https://wshopy.onrender.com";
 
 app.use(cors());
 app.use(express.json());
@@ -113,7 +113,7 @@ bot.start((ctx) => {
         {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "🚀 Открыть Каталог", web_app: { url: NGROK_URL } }]
+                    [{ text: "🚀 Открыть Каталог", web_app: { url: WEBAPP_URL } }]
                 ]
             }
         }
