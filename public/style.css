@@ -9,13 +9,12 @@ body {
     background-color: #0d0d0d;
     color: #ffffff;
     overflow-x: hidden;
-    padding-top: calc(var(--tg-safe-area-inset-top, 100px) + 10px);
-    padding-bottom: var(--tg-safe-area-inset-bottom, 20px);
 }
 
 /* Hero Section */
 .hero {
     position: relative;
+    padding-top: calc(var(--tg-safe-area-inset-top, env(safe-area-inset-top, 47px)) + 15px);
     min-height: 55vh;
     display: flex;
     flex-direction: column;
@@ -162,6 +161,7 @@ body {
 
 .product-header {
     padding: 20px;
+    padding-top: calc(var(--tg-safe-area-inset-top, env(safe-area-inset-top, 47px)) + 15px);
 }
 
 .back-btn {
