@@ -151,7 +151,7 @@ app.post('/api/order', async (req, res) => {
         res.json({ success: true, message: "Order placed" });
     } catch (e) {
         console.error("Error saving order to Firebase:", e);
-        res.status(500).json({ error: "Failed to process order" });
+        res.status(500).json({ error: e.message || "Failed to process order" });
     }
 });
 

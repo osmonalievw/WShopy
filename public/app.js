@@ -212,7 +212,8 @@ payConfirmBtn.onclick = async () => {
             appDiv.style.display = 'block';
             tg.close();
         } else {
-            tg.showAlert("Ошибка при отправке заказа (Файл слишком большой?).");
+            const errData = await res.json();
+            tg.showAlert(`Ошибка от сервера: ${errData.error || res.statusText}`);
         }
     } catch (e) {
         tg.showAlert("Ошибка при отправке заказа.");
