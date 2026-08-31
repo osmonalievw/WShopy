@@ -157,6 +157,10 @@ html, body {
     background-color: #0d0d0d;
     min-height: 100vh;
     padding-bottom: 40px;
+}
+
+#app {
+    padding: 20px;
     animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -371,4 +375,3 @@ html, body {
     box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
 }
 
-#app { animation: fadeIn 0.3s ease-in-out; }
