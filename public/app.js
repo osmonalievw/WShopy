@@ -210,7 +210,7 @@ payConfirmBtn.onclick = async () => {
             checkoutModal.style.display = 'none';
             productPage.style.display = 'none';
             appDiv.style.display = 'block';
-            tg.close();
+            window.scrollTo(0,0);
         } else {
             let errorText = res.statusText;
             try {

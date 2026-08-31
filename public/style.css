@@ -95,3 +95,11 @@ html, body { background-color: #0d0d0d; color: #ffffff; overflow-x: hidden; min-
 
 .file-upload-btn { display: block; width: 100%; padding: 15px; border-radius: 10px; background: #222; color: #00ffcc; text-align: center; border: 1px dashed #00ffcc; cursor: pointer; font-size: 14px; margin-top: 10px; }
 .file-upload-btn:active { background: #333; }
+
+/* Bottom Navigation */
+.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(13, 13, 13, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 15px 0 max(15px, var(--tg-safe-area-inset-bottom, 20px)) 0; border-top: 1px solid #333; z-index: 50; }
+.nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 11px; cursor: pointer; transition: 0.3s; }
+.nav-item.active { color: #00ffcc; }
+.nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 4px; }
+#app { padding-bottom: 100px; }
+#product-page { padding-bottom: 100px; }
