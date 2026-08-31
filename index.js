@@ -4,16 +4,25 @@ const { Telegraf } = require('telegraf');
 const SneaksAPI = require('sneaks-api');
 const cors = require('cors');
 const path = require('path');
-const admin = require('firebase-admin');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { getStorage } = require('firebase-admin/storage');
 
 // Initialize Firebase Admin
-const serviceAccount = require('./serviceAccountKey.json');
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+let serviceAccount;
+try {
+    serviceAccount = require('./serviceAccountKey.json');
+} catch (e) {
+    console.error("serviceAccountKey.json not found! Ensure it is uploaded to Render as a Secret File.");
+    process.exit(1);
+}
+
+initializeApp({
+  credential: cert(serviceAccount),
   storageBucket: "showp-d6660.appspot.com" // Default bucket
 });
-const db = admin.firestore();
-const bucket = admin.storage().bucket();
+const db = getFirestore();
+const bucket = getStorage().bucket();
 
 const app = express();
 const bot = new Telegraf(process.env.TGBOT_API_KEY);
@@ -135,7 +144,7 @@ app.post('/api/order', async (req, res) => {
             price: price,
             receiptUrl: receiptUrl,
             status: 'pending_payment',
-            createdAt: admin.firestore.FieldValue.serverTimestamp()
+            createdAt: FieldValue.serverTimestamp()
         });
         
         console.log(`Order ${orderRef.id} saved to Firebase!`);
