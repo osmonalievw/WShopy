@@ -212,11 +212,17 @@ payConfirmBtn.onclick = async () => {
             appDiv.style.display = 'block';
             tg.close();
         } else {
-            const errData = await res.json();
-            tg.showAlert(`Ошибка от сервера: ${errData.error || res.statusText}`);
+            let errorText = res.statusText;
+            try {
+                const errData = await res.json();
+                errorText = errData.error || errorText;
+            } catch (jsonErr) {
+                errorText = await res.text();
+            }
+            tg.showAlert(`Ошибка сервера (${res.status}): ${errorText.substring(0, 100)}`);
         }
     } catch (e) {
-        tg.showAlert("Ошибка при отправке заказа.");
+        tg.showAlert("Сетевая ошибка: " + e.message);
     } finally {
         payConfirmBtn.innerText = "Я перевел(а) деньги";
         payConfirmBtn.disabled = false;
