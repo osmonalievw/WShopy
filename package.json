@@ -4,7 +4,8 @@
   "description": "Telegram WebApp Proxy Buyer MVP",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node dev.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
