@@ -133,7 +133,26 @@ app.post('/api/order', async (req, res) => {
         }
         
         // Save to Firestore
+        const now = FieldValue.serverTimestamp();
         const orderRef = await db.collection('orders').add({
+            // Schema for Flutter Admin (proxy_buyer_app):
+            user_id: String(user_id || 'guest'),
+            user_name: name || 'Клиент',
+            user_phone: phone || '',
+            product_id: product.styleID || 'custom_id',
+            product_title: product.shoeName || 'Кроссовки',
+            product_price: parseFloat(price) || 0,
+            product_image_url: product.thumbnail || (product.image && product.image['360'] && product.image['360'][0]) || '',
+            specification: {
+                size: size || '',
+                color: color || ''
+            },
+            receipt_image_url: receiptUrl,
+            status: 'VERIFYING_PAYMENT',
+            created_at: now,
+            updated_at: now,
+
+            // Legacy schema:
             userId: user_id,
             name: name,
             phone: phone,
@@ -142,9 +161,7 @@ app.post('/api/order', async (req, res) => {
             color: color,
             size: size,
             price: price,
-            receiptUrl: receiptUrl,
-            status: 'pending_payment',
-            createdAt: FieldValue.serverTimestamp()
+            receiptUrl: receiptUrl
         });
         
         console.log(`Order ${orderRef.id} saved to Firebase!`);
