@@ -8,11 +8,17 @@
     "dev": "node dev.js"
   },
   "dependencies": {
+    "axios": "^1.20.0",
+    "cheerio": "^1.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "firebase-admin": "^14.3.0",
     "sneaks-api": "^1.2.3",
     "telegraf": "^4.16.3"
+  },
+  "devDependencies": {
+    "ngrok": "^5.0.0-beta.2",
+    "nodemon": "^3.1.14"
   }
 }
